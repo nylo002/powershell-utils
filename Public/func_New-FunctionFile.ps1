@@ -50,11 +50,9 @@ function New-FunctionFile {
 
     # Check whether the path already exists. If it exists as a file, check if we can overwrite.
     If (Test-Path -Path $filePath -PathType Container) {
-        Write-Error "Can't create file at $filePath, since it already exists as a directory. Try specifying a custom path with the -Path parameter."
-        exit 1
+        throw "Can't create file at $filePath, since it already exists as a directory. Try specifying a custom path with the -Path parameter."
     } Elseif ((Test-Path -Path $filePath -PathType Leaf) -and (-not $overwrite)) {
-        Write-Error "Can't create file at $filePath since it already exists. Try specifying the -Overwrite switch."
-        exit 1
+        throw "Can't create file at $filePath since it already exists. Try specifying the -Overwrite switch."
     }
 
     $aliasesToInclude = @()

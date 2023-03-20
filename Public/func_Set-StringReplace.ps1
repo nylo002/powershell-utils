@@ -56,8 +56,7 @@ function Set-StringReplace {
         } ElseIf ($PSCmdlet.ParameterSetName -eq 'Pipeline') {
             $originalString = $_
         } Else {
-            Write-Error "No string was specified. Either pass a String object through the pipeline, or set the -String parameter."
-            exit 1
+            throw "No string was specified. Either pass a String object through the pipeline, or set the -String parameter."
         }
 
         return $originalString -creplace $match,$replacement

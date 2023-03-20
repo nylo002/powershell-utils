@@ -56,10 +56,10 @@ function New-CommandWrapper {
         [String[]] $aliases
 
         ,[Parameter()]
-        [String] $shortDescription = "Wraps a more complex command."
+        [String] $shortDescription = "Wraps command: $(If ($command.Length -gt 32) { ($command[0..31] | Join-String) + "..." } Else { $command })"
 
         ,[Parameter()]
-        [String] $longDescription = "Wraps a more complex command."
+        [String] $longDescription = "Wraps the following command: $command"
 
         ,[Alias('o')]
         [Parameter()]
@@ -70,11 +70,9 @@ function New-CommandWrapper {
 
     # Check whether the path already exists. If it exists as a file, check if we can overwrite.
     If (Test-Path -Path $filePath -PathType Container) {
-        Write-Error "Can't create file at $filePath, since it already exists as a directory. Try specifying a custom path with the -Path parameter."
-        exit 1
+        throw "Can't create file at $filePath, since it already exists as a directory. Try specifying a custom path with the -Path parameter."
     } Elseif ((Test-Path -Path $filePath -PathType Leaf) -and (-not $overwrite)) {
-        Write-Error "Can't create file at $filePath since it already exists. Try specifying the -Overwrite switch."
-        exit 1
+        throw "Can't create file at $filePath since it already exists. Try specifying the -Overwrite switch."
     }
 
     $aliasesToInclude = @()
@@ -122,10 +120,9 @@ function New-CommandWrapper {
   $longDescription
 #>
 function $name {
-    [CmdletBinding()]
-    param()
-
-    $command
+    `$argsString = `$args | Join-String -Separator " "
+    `$commandWithArgs = "$command `$argsString"
+    Invoke-Command -ScriptBlock ([ScriptBlock]::Create(`$commandWithArgs))
 }
 
 $aliasesContents
