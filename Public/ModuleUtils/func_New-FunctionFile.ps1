@@ -1,65 +1,45 @@
-. (Join-Path $PSScriptRoot ..\Private\ModuleUtils.ps1)
+. (Join-Path $PSScriptRoot ..\..\Private\ModuleUtils.ps1)
 
 <#
  .Synopsis
-  Creates a .ps1 file in the current directory containing a function that wraps a command.
+  Creates a .ps1 file containing a default function in the current directory.
 
  .Description
-  Creates (or overwrites) a .ps1 file with a function that wraps a command.
-  This is useful to use as an alias for frequently uses commands, which can be as long and complex as desired.
+  Creates (or overwrites) a .ps1 file with a function containing some default contents; basically a template.
+  This is helpful when creating functions for a module, since this takes away some of the boilerplate.
 
-  The file will be placed in the current directory.
+  This cmdlet will place the file in the current directory.
 
  .Parameter Name
-  The name of the wrapper. The file will be named 'func_<Name>.ps1'
+  The name of the function. The file will be named 'func_<Name>.ps1'
 
  .Parameter Module
-  Must be a path to a module manifest (.psd1 file). If present, adds this wrapper to the list of exported functions and aliases of the module.
+  Must be a path to a module manifest (.psd1 file). If present, adds this function to the list of exported functions and aliases sof the module.
   Only updates the manifest and not the module file (.psm1).
 
  .Parameter Aliases
-  The aliases for this wrapper. It's recommended to name the wrapper something long and descriptive
-  and to use these aliases as short-hands.
-
- .Parameter ShortDescription
-  The text that will be used by Get-Help as the synopsis of this function.
-
- .Parameter LongDescription
-  The text that will be used by Get-Help as the description of this function.
+  The aliases for this function.
 
  .Parameter Overwrite (o)
   Unless this switch is active, the cmdlet will not overwrite any existing file.
 
  .Example
-  #Create a new wrapper named 'func_Get-AllFilesAndDirectories.ps1' and give it an alias 'la'.
-  New-CommandWrapper Get-AllFilesAndDirectories 'Get-ChildItem -Force' -Aliases la
-
- .Example
-  #Create a new wrapper and add it and it's aliases to a module named 'ps-module'.
-  newwrap Get-FilesSortedBySize 'Get-ChildItem | Sort-Object -Descending -Property Length' -Module ps-module.psd1
+  #Create a new file named 'func_Default-Function.ps1', or overwrite it if it already exists.
+  New-FunctionFile 'Default-Function' -Overwrite
 #>
-function New-CommandWrapper {
+function New-FunctionFile {
     [CmdletBinding()]
     param(
         [Parameter(Position = 0, Mandatory)]
         [String] $name
 
-        ,[Parameter(Position = 1, Mandatory)]
-        [String] $command
-
-        ,[Parameter(Position = 2)]
+        ,[Parameter(Position = 1)]
         [ValidateScript({ Test-Path -Path $_ -PathType Leaf },
             ErrorMessage = "File does not exist.")]
         [String] $module
 
         ,[Parameter()]
         [String[]] $aliases
-
-        ,[Parameter()]
-        [String] $shortDescription = "Wraps command: $(If ($command.Length -gt 32) { ($command[0..31] | Join-String) + "..." } Else { $command })"
-
-        ,[Parameter()]
-        [String] $longDescription = "Wraps the following command: $command"
 
         ,[Alias('o')]
         [Parameter()]
@@ -114,15 +94,25 @@ function New-CommandWrapper {
     $fileContents = $ExecutionContext.InvokeCommand.ExpandString(@'
 <#
  .Synopsis
-  $shortDescription
+  Short format description of the function.
 
  .Description
-  $longDescription
+  Long format description of the function.
+
+ #.Parameter DefaultParam
+ Description of the DefaultParam parameter
+
+ #.Example
+ #  # Show default output of this command.
+ #  $name
 #>
 function $name {
-    `$argsString = `$args | Join-String -Separator " "
-    `$commandWithArgs = "$command `$argsString"
-    Invoke-Command -ScriptBlock ([ScriptBlock]::Create(`$commandWithArgs))
+    [CmdletBinding()]
+    param(
+        [Parameter(Position = 0, Mandatory = `$true)][String] `$defaultParam
+    )
+
+    Write-Output 'Default output of $name.'
 }
 
 $aliasesContents
@@ -131,4 +121,4 @@ $aliasesContents
     Out-File -FilePath $filePath -InputObject $fileContents
 }
 
-New-Alias -Name nwrap -Value New-CommandWrapper
+New-Alias -Name nfunc -Value New-FunctionFile
