@@ -6,7 +6,7 @@
   Wraps the following command: git ls-files --others
 #>
 function Out-GitListUntrackedChanges {
-    git ls-files --others
+    git ls-files $(git rev-parse --show-toplevel) --others --exclude-standard
 }
 
 New-Alias -Name ngluc -Value Out-GitListUntrackedChanges

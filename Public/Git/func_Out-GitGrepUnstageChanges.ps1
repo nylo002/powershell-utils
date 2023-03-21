@@ -6,7 +6,10 @@
   Wraps the following command: ggus
 #>
 function Out-GitGrepUnstageChanges {
-  Out-GitGrepListStagedChanges $args[0] | ForEach-Object { git reset -q -- $_ }
+  $gitRoot = $(git rev-parse --show-toplevel)
+  Out-GitGrepListStagedChanges $args[0] | ForEach-Object {
+    git reset -q -- $(Join-Path $gitRoot $_)
+  }
   git status
 }
 

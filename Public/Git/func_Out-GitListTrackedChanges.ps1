@@ -6,7 +6,7 @@
   Wraps the following command: git diff --name-only
 #>
 function Out-GitListTrackedChanges {
-    git diff --name-only
+  git ls-files $(git rev-parse --show-toplevel) --modified --exclude-standard
 }
 
 New-Alias -Name ngltc -Value Out-GitListTrackedChanges
