@@ -77,7 +77,7 @@ FunctionsToExport = 'New-FunctionFile', 'Get-AllChildItems', 'New-CommandWrapper
                'Out-GitGrepListUntrackedChanges', 'Out-GitGrepListTrackedChanges', 
                'Out-GitGrepListStagedChanges', 'Out-GitListUnstagedChanges', 
                'Out-GitGrepListUnstagedChanges', 'Out-GitGrepAddUnstagedChanges', 
-               'Out-GitGrepUnstageChanges'
+               'Out-GitGrepUnstageChanges', 'Invoke-GitCommit'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -89,7 +89,7 @@ CmdletsToExport = @()
 AliasesToExport = 'nwrap', 'nfunc', 'la', 'nfloordate', 'nstringreplace', 'nreplace', 'nrep', 
                'njoinstring', 'nglab', 'ngllb', 'nglrb', 'ngluc', 'ngltc', 'nglsc', 'ngrep', 
                'nggluc', 'ggluc', 'nggltc', 'ggltc', 'ngglsc', 'gglsc', 'nglnc', 'ngglnc', 
-               'gglnc', 'nggadd', 'ggadd', 'gadd', 'nggus', 'ggus', 'gus'
+               'gglnc', 'nggadd', 'ggadd', 'gadd', 'nggus', 'ggus', 'gus', 'ngcom', 'gcom'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
