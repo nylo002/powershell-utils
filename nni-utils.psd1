@@ -76,8 +76,8 @@ FunctionsToExport = 'New-FunctionFile', 'Get-AllChildItems', 'New-CommandWrapper
                'Out-GitListStagedChanges', 'Select-StringWithDefaults', 
                'Out-GitGrepListUntrackedChanges', 'Out-GitGrepListTrackedChanges', 
                'Out-GitGrepListStagedChanges', 'Out-GitListUnstagedChanges', 
-               'Out-GitGrepListUnstagedChanges', 'Out-GitGrepAddUnstagedChanges', 
-               'Out-GitGrepUnstageChanges', 'Invoke-GitCommit'
+               'Out-GitGrepListUnstagedChanges', 'Invoke-GitGrepAddUnstagedChanges', 
+               'Invoke-GitGrepUnstageChanges', 'Invoke-GitCommit'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
