@@ -6,7 +6,7 @@
   Wraps the following command: git branch -a
 #>
 function Out-GitListAllBranches {
-    git branch -a
+  git for-each-ref --format='%(refname:short)' 'refs'
 }
 
 New-Alias -Name nglab -Value Out-GitListAllBranches

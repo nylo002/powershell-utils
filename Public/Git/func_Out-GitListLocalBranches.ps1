@@ -6,7 +6,7 @@
   Wraps the following command: git branch
 #>
 function Out-GitListLocalBranches {
-    git branch
+  git for-each-ref --format='%(refname:short)' 'refs/heads'
 }
 
 New-Alias -Name ngllb -Value Out-GitListLocalBranches

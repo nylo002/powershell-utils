@@ -6,7 +6,7 @@
   Wraps the following command: git branch --remote
 #>
 function Out-GitListRemoteBranches {
-    git branch --remote
+  git for-each-ref --format='%(refname:short)' 'refs/remotes'
 }
 
 New-Alias -Name nglrb -Value Out-GitListRemoteBranches
