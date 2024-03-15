@@ -1,14 +1,25 @@
 <#
  .Synopsis
-  Wraps command: ggcob
+  Short format description of the function.
 
  .Description
-  Wraps the following command: ngllb | ngrep
+  Long format description of the function.
+
+ #.Parameter DefaultParam
+ Description of the DefaultParam parameter
+
+ #.Example
+ #  # Show default output of this command.
+ #  Invoke-GitRemoveMergedBranches
 #>
-function Invoke-GitGrepCheckOutBranch {
-  (Out-GitGrepListLocalBranches $args[0])[0] | ForEach-Object { git checkout $_ }
+function Invoke-GitRemoveMergedBranches {
+    [CmdletBinding()]
+    param(
+        [Parameter(Position = 0, Mandatory = $true)][String] $defaultParam
+    )
+
+    Write-Output 'Default output of Invoke-GitRemoveMergedBranches.'
 }
 
-New-Alias -Name nggcob -Value Invoke-GitGrepCheckOutBranch
-New-Alias -Name ggcob -Value Invoke-GitGrepCheckOutBranch
-New-Alias -Name gcob -Value Invoke-GitGrepCheckOutBranch
+New-Alias -Name ngrmb -Value Invoke-GitRemoveMergedBranches
+New-Alias -Name grmb -Value Invoke-GitRemoveMergedBranches
